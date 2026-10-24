@@ -11,6 +11,12 @@
 <ul>
     @foreach (var p in Model)
     {
-        <li>@p.Nome - R$ @p.Preco</li>
+        <li>
+            @p.Nome - R$ @p.Preco
+            <form asp-action="Excluir" method="post" style="display:inline">
+                <input type="hidden" name="id" value="@p.Id" />
+                <button type="submit" onclick="return confirm('Excluir este produto?')">Excluir</button>
+            </form>
+        </li>
     }
 </ul>
