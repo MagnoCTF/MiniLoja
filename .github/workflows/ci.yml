@@ -18,8 +18,15 @@ jobs:
       - run: dotnet build --no-restore -c Release
       - run: dotnet test --no-build -c Release
 
+  docker-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Construir a imagem Docker
+        run: docker build -t miniloja:${{ github.sha }} .
+
   deploy:
-    needs: build-and-test
+    needs: [build-and-test, docker-build]
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
