@@ -1,22 +1,50 @@
 ﻿@model List<Produto>
+@{
+    ViewData["Title"] = "Produtos";
+    var br = new System.Globalization.CultureInfo("pt-BR");
+}
 
-<h1>Produtos</h1>
+<section class="hero">
+    <h1>Produtos</h1>
+    <p>Cadastre e gerencie os itens da loja.</p>
+</section>
 
-<form asp-action="Criar" method="post">
-    <input name="nome" placeholder="Nome" required />
-    <input name="preco" type="number" step="0.01" placeholder="Preço" required />
-    <button type="submit">Cadastrar</button>
+<form asp-action="Criar" method="post" class="card form-card">
+    <div class="field">
+        <label for="nome">Nome</label>
+        <input id="nome" name="nome" placeholder="Ex.: Camiseta" required autocomplete="off" />
+    </div>
+    <div class="field field-price">
+        <label for="preco">Preço</label>
+        <input id="preco" name="preco" type="number" step="0.01" min="0" placeholder="0,00" required />
+    </div>
+    <button type="submit" class="btn btn-primary">Cadastrar</button>
 </form>
 
-<ul>
-    @foreach (var p in Model)
-    {
-        <li>
-            @p.Nome - R$ @p.Preco
-            <form asp-action="Excluir" method="post" style="display:inline">
-                <input type="hidden" name="id" value="@p.Id" />
-                <button type="submit" onclick="return confirm('Excluir este produto?')">Excluir</button>
-            </form>
-        </li>
-    }
-</ul>
+<div class="list-head">
+    <h2>Lista</h2>
+    <span class="count">@Model.Count @(Model.Count == 1 ? "produto" : "produtos")</span>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="empty">Nenhum produto cadastrado ainda.</div>
+}
+else
+{
+    <ul class="items">
+        @foreach (var p in Model)
+        {
+            <li class="item">
+                <div class="item-info">
+                    <span class="item-name">@p.Nome</span>
+                    <span class="item-price">@p.Preco.ToString("C", br)</span>
+                </div>
+                <form asp-action="Excluir" method="post">
+                    <input type="hidden" name="id" value="@p.Id" />
+                    <button type="submit" class="btn btn-ghost" onclick="return confirm('Excluir este produto?')">Excluir</button>
+                </form>
+            </li>
+        }
+    </ul>
+}
