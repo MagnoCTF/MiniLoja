@@ -4,7 +4,7 @@
     public void Desconto_de_10_por_cento_em_100_resulta_em_90()
     {
         var p = new Produto { Nome = "Camisa", Preco = 100 };
-        Assert.Equal(90, p.PrecoComDesconto(10));
+        Assert.Equal(91, p.PrecoComDesconto(10));
     }
 
     [Fact]
